@@ -7,7 +7,7 @@ from users.models import CustomUser
 class Note(models.Model):
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(verbose_name="Тема записки", max_length=150)
-    text = models.CharField(max_length=15, verbose_name="Текст", blank=True, null=True)
+    text = models.TextField(verbose_name="Текст", blank=True, null=True)
     creation_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания" ,blank=True, null=True)
 
     def __str__(self):

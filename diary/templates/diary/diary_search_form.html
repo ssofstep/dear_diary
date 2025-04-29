@@ -1,0 +1,52 @@
+{% extends 'diary/home.html' %}
+
+{% block title %}Поиск записок{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+            <!-- Форма поиска -->
+            <div class="card shadow-lg rounded-4 border-0 mb-5">
+                <div class="card-body p-4">
+                    <h2 class="fw-bold text-primary text-center mb-4">Найти записку</h2>
+                    <form method="get">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.as_p }}
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary px-4 py-2">Искать</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Результаты поиска -->
+            {% if object_list %}
+                <div class="card shadow-lg rounded-4 border-0">
+                    <div class="card-body p-4">
+                        <h3 class="text-center fw-semibold text-success mb-4">Найдено: {{ object_list|length }}</h3>
+                        {% for note in object_list %}
+                            <div class="border rounded-3 p-3 mb-3 shadow-sm">
+                                <h5 class="fw-bold text-dark mb-2">{{ note.title }}</h5>
+                                <p class="text-muted mb-1"><small>{{ note.creation_date|date:"Y-m-d H:i" }}</small></p>
+                                <p class="text-secondary">{{ note.text|truncatewords:25 }}</p>
+                                <a href="{% url 'diary:note_detail' note.pk %}" class="btn btn-outline-primary btn-sm mt-2">Открыть</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% elif form.errors %}
+                <div class="alert alert-danger shadow-sm mt-4">
+                    Произошла ошибка при поиске: {{ form.errors }}
+                </div>
+            {% else %}
+                <div class="alert alert-info shadow-sm mt-4">
+                    Пока ничего не нашлось. Попробуй уточнить запрос.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
