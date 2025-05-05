@@ -15,6 +15,13 @@ class NoteListView(ListView):
     model = Note
     template_name = 'diary/note_list.html'
 
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            queryset = super().get_queryset()
+            return queryset.filter(owner=self.request.user)
+        else:
+            return Note.objects.none()
+
 
 class NoteCreateView(CreateView):
     model = Note

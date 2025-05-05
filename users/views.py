@@ -1,6 +1,8 @@
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from .forms import CustomUserCreationForm
+
 
 class RegisterView(CreateView):
     template_name = 'users/register.html'
@@ -9,4 +11,8 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
+        user.is_active = True
+        user.save()
         return super().form_valid(form)
+
+
