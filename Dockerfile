@@ -15,6 +15,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 ENV SECRET_KEY=os.getenv("SECRET_KEY")
-ENV CELERY_BROKER_URL='redis://localhost:6379'
 
 EXPOSE 8000

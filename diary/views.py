@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -6,6 +7,7 @@ from django.views.generic import TemplateView, ListView, CreateView, UpdateView,
 
 from diary.forms import NoteForm, DiarySearchForm
 from diary.models import Note
+
 
 
 class HomeView(TemplateView):
@@ -23,7 +25,7 @@ class NoteListView(ListView):
             return Note.objects.none()
 
 
-class NoteCreateView(CreateView):
+class NoteCreateView(LoginRequiredMixin, CreateView):
     model = Note
     form_class = NoteForm
     template_name = 'diary/note_form.html'
@@ -39,7 +41,7 @@ class NoteCreateView(CreateView):
         return super().form_valid(form)
 
 
-class NoteUpdateView(UpdateView):
+class NoteUpdateView(LoginRequiredMixin, UpdateView):
     model = Note
     form_class = NoteForm
     template_name = 'diary/note_form.html'
@@ -51,7 +53,7 @@ class NoteDetailView(DetailView):
     template_name = 'diary/note_detail.html'
 
 
-class NoteDeleteView(DeleteView):
+class NoteDeleteView(LoginRequiredMixin, DeleteView):
     model = Note
     template_name = 'diary/note_confirm_delete.html'
     success_url = reverse_lazy('diary:note_list')
