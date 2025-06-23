@@ -1,0 +1,34 @@
+{% extends 'diary/home.html' %}
+{% block title %}Твоя записка{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-white border-bottom-0">
+            <h2 class="fw-bold text-dark mb-0">Немного твоих мыслей <i class="bi bi-heart-fill text-danger"></i></h2>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-light">
+                    <strong>Тема:</strong> {{ object.title }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Текст:</strong> {{ object.text|default:"(нет текста)" }}
+                </li>
+                <li class="list-group-item bg-light">
+                    <strong>Дата создания:</strong> {{ object.creation_date|date:"Y-m-d H:i" }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Автор:</strong> {{ object.owner|default:"(неизвестен)" }}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex gap-2">
+        <a href="{% url 'diary:note_update' note.pk %}" class="btn btn-outline-primary mr-2">Редактировать</a>
+        <a href="{% url 'diary:note_delete' note.pk %}" class="btn btn-outline-danger mr-2">Удалить</a>
+        <a href="{% url 'diary:note_list' %}" class="btn btn-outline-secondary">Назад к списку</a>
+    </div>
+</div>
+{% endblock %}

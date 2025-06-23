@@ -1,3 +1,18 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
+from .forms import CustomUserCreationForm
 
-# Create your views here.
+
+class RegisterView(CreateView):
+    template_name = 'users/register.html'
+    form_class = CustomUserCreationForm
+    success_url = reverse_lazy('diary:note_list')
+
+    def form_valid(self, form):
+        user = form.save()
+        user.is_active = True
+        user.save()
+        return super().form_valid(form)
+
+
